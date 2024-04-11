@@ -1,16 +1,21 @@
 services:
   app:
+    # Utilisation de cette image pour créer le conteneur
     image: docker-php-apache-npm:php8.2-alpine
     container_name: app_cesi_docker
+    # Répertoire en local ./volumes/app dans le répertoire du conteneur /app
     volumes:
       - ./volumes/app:/app
+    # Redirige le port 8080 de l'hôte vers le port 80 du conteneur | Uniquement en local
     ports:
-      - 8080:80 # Uniquement en local
+      - 8080:80 
+    # Liaison au réseau 'app-network'
     networks:
       - app-network
 
   # Database MySQL - Uniquement en local : Connexion avec MySQL Workbench possible via 127.0.0.1 et le port 4407
   database:
+    # Utilisation l'image mysql la plus récente pour créer le conteneur
     image: mysql:latest
     container_name: database_cesi_docker
     environment:
@@ -18,8 +23,10 @@ services:
       MYSQL_ROOT_PASSWORD: 1234 # Uniquement en local
       MYSQL_USER: app
       MYSQL_PASSWORD: 1234 # Uniquement en local
+    # Définition des ports 
     ports:
       - 4407:3306 # Uniquement en local
+    # Répertoire local ./volumes/database/data dans le répertoire /var/lib/mysql du conteneur
     volumes:
       - ./volumes/database/data:/var/lib/mysql
     networks:
@@ -28,4 +35,5 @@ services:
 # Networks
 networks:
   app-network:
+    # Utilisation du pilote "bridge" pour créer le réseau
     driver: bridge
