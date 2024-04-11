@@ -1,0 +1,31 @@
+services:
+  app:
+    image: docker-php-apache-npm:php8.2-alpine
+    container_name: app_cesi_docker
+    volumes:
+      - ./volumes/app:/app
+    ports:
+      - 8080:80 # Uniquement en local
+    networks:
+      - app-network
+
+  # Database MySQL - Uniquement en local : Connexion avec MySQL Workbench possible via 127.0.0.1 et le port 4407
+  database:
+    image: mysql:latest
+    container_name: database_cesi_docker
+    environment:
+      MYSQL_DATABASE: DB_APP
+      MYSQL_ROOT_PASSWORD: 1234 # Uniquement en local
+      MYSQL_USER: app
+      MYSQL_PASSWORD: 1234 # Uniquement en local
+    ports:
+      - 4407:3306 # Uniquement en local
+    volumes:
+      - ./volumes/database/data:/var/lib/mysql
+    networks:
+      - app-network
+
+# Networks
+networks:
+  app-network:
+    driver: bridge
