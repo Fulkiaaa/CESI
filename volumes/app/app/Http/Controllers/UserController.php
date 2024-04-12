@@ -11,7 +11,6 @@ class UserController extends Controller
     {
         $user = User::find($userId);
         $roles = $user->roles;
-        // dd($roles);
 
         return view('user_role', ['roles' => $roles]);
     }
