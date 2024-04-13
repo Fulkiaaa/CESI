@@ -7,11 +7,9 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function getRolesByUserId($userId)
+    public function index()
     {
-        $user = User::find($userId);
-        $roles = $user->roles;
-
-        return view('user_role', ['roles' => $roles]);
+        $users = User::with('roles')->get();
+        return view('welcome', ['users' => $users]);
     }
 }
